@@ -4,20 +4,33 @@
 #include <process.h>
 #include <vector>
 #include <list>
+#include <map>
+#include <iostream>
 
 #include "cplus_test.h"
 #include "cplus_clone.h"
 #include "cplus_singleton.h"
 #include "cplus_bridge.h"
+#include "cplus_component.h"
+#include "cplus_decorate.h"
+#include "cplus_facade.h"
+
 //#define SIMPLE_FACTORY
 //#define ABSTRACT_FACTORY
 //#define BUILDER
 //#define PROTO_CLONE
 //#define SINGLETON_TEST
-//#define THREAD_TEST
-//#define BRIDGE_TEST
 
+//#define BRIDGE_TEST
+//#define COMPONENT_TEST
+//#define MAP_PAIR_TEST
+//#define FACADE_TEST
+//#define DECORATE_TEST
+
+//#define THREAD_TEST
 #define THREAD_NUM 5
+
+using namespace std;
 
 unsigned int __stdcall CallSingleton(void *pPM)
 {
@@ -29,7 +42,7 @@ unsigned int __stdcall CallSingleton(void *pPM)
 
 void ThreadTest(void)
 {
-	HANDLE  handle[THREAD_NUM];
+	HANDLE handle[THREAD_NUM];
 
 	int threadNum = 0;
 	while (threadNum < THREAD_NUM)
@@ -103,24 +116,69 @@ int main(int argc, char **argv)
 
 #ifdef SINGLETON_TEST
 	using namespace singleton;
-	unique_ptr<Singleton>s1(Singleton::getInstance());
-	unique_ptr<Singleton>s2(Singleton::getInstance());
+	unique_ptr<Singleton> s1(Singleton::getInstance());
+	unique_ptr<Singleton> s2(Singleton::getInstance());
 #endif
-
 
 #ifdef THREAD_TEST
 	ThreadTest();
 #endif
 
 #ifdef BRIDGE_TEST
-		using namespace cplus_bridge;
-		//unique_ptr<Game> game1(new GameA);
-		Game *game1 = new GameA();
-		unique_ptr<phoneA> phone1(new phoneA);
+	using namespace cplus_bridge;
+	//unique_ptr<Game> game1(new GameA);
+	Game *game1 = new GameA();
+	unique_ptr<phoneA> phone1(new phoneA);
 
-		phone1->setupGame(game1);
-		phone1->print();
-		free(game1);
+	phone1->setupGame(game1);
+	phone1->print();
+	free(game1);
+#endif
+
+#ifdef COMPONENT_TEST
+	using namespace space_component;
+	unique_ptr<SubComopnet> Company(new SubComopnet("MyCompany"));
+	office *office1 = new office("Room1");
+	hall *hall1 = new hall("Hall1");
+
+	Company->add(office1);
+	Company->add(hall1);
+#endif
+
+#ifdef MAP_PAIR_TEST
+	typedef std::pair<int, string> MyPairType;
+	typedef std::map<int, string> MyMapType;
+
+	MyMapType MyMap;
+	MyMap.insert(pair<int, string>(001, "number1"));
+	MyMap.insert(pair<int, string>(002, "number2"));
+	MyMap.insert(MyPairType(003, "third"));
+
+	const MyMapType::iterator iter = MyMap.find(003);
+	if (iter != MyMap.end())
+	{
+		cout << iter->second << endl;
+	}
+#endif
+
+#ifdef DECORATE_TEST
+	using namespace space_decorate;
+	{
+		component *MyPhone = new phone();
+		unique_ptr<decorate> MyDecorate(new decorate(MyPhone));
+		MyDecorate->operation();
+	}
+#endif
+
+#ifdef FACADE_TEST
+	using namespace space_facade;
+	{
+		Memory *myMem = new Memory;
+		CPU *myCpu = new CPU;
+		unique_ptr<Facade> myFacade(new Facade(myMem, myCpu));
+		myFacade->power_on();
+
+	} // namespace space_facade
 #endif
 
 	return 0;

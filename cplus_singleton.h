@@ -15,21 +15,22 @@ namespace singleton
         {
             if (instance == NULL)
             {
-				printf("get Singleton\n");
+                printf("get Singleton\n");
                 instance = new Singleton();
             }
             return instance;
         }
 
     private:
-        Singleton(){
-			printf("init Singleton\n");
-		}
-		
-        static Singleton* instance;
+        Singleton()
+        {
+            printf("init Singleton\n");
+        }
+
+        static Singleton *instance;
     };
 
-    Singleton* Singleton::instance = NULL;
+    Singleton *Singleton::instance = NULL;
 
 }
 
