@@ -14,6 +14,9 @@
 #include "cplus_component.h"
 #include "cplus_decorate.h"
 #include "cplus_facade.h"
+#include "cplus_flyweight.hpp"
+
+#include "normal_test.hpp"
 
 //#define SIMPLE_FACTORY
 //#define ABSTRACT_FACTORY
@@ -26,8 +29,10 @@
 //#define MAP_PAIR_TEST
 //#define FACADE_TEST
 //#define DECORATE_TEST
+//#define FLYWEIGHT_TEST
 
 //#define THREAD_TEST
+#define UNIQUE_PTR_LAMDBA
 #define THREAD_NUM 5
 
 using namespace std;
@@ -179,6 +184,20 @@ int main(int argc, char **argv)
 		myFacade->power_on();
 
 	} // namespace space_facade
+#endif
+#ifdef FLYWEIGHT_TEST
+	using namespace flyweight;
+
+	Hub *MyHub = new Hub();
+	NetDeviceFactory *myFactory = NetDeviceFactory::getFactory();
+	myFactory->addDevice(MyHub);
+#endif
+
+#ifdef UNIQUE_PTR_LAMDBA
+	SafeWFDHandle temp = weirdFunc();
+	unique_ptr<easy_test, std::function<void(easy_test*)>> myTest(new easy_test{}, [](easy_test *p) {cout << p->array[0] << endl;});
+	myTest->array[0] = 0xA;
+	unique_ptr < go, function<void(go*) > > a{ new go{}, d };
 #endif
 
 	return 0;
