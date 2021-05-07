@@ -9,262 +9,260 @@ using namespace std;
 /* factory */
 namespace factory_method
 {
-    class abstractionSport
-    {
-    public:
-        abstractionSport(){};
-        ~abstractionSport(){};
-        virtual void print() = 0;
-    };
+class abstractionSport
+{
+public:
+    abstractionSport(){};
+    ~abstractionSport(){};
+    virtual void print() = 0;
+};
 
-    class basketball : public abstractionSport
+class basketball : public abstractionSport
+{
+public:
+    basketball()
     {
-    public:
-        basketball()
-        {
-        }
-        void print()
-        {
-            printf("basketball\n");
-        }
-    };
-
-    class abstractionFactory
+    }
+    void print() override
     {
-    public:
-        virtual abstractionSport *getProduct() = 0;
-    };
+        printf("basketball\n");
+    }
+};
 
-    class basketballFactory : public abstractionFactory
+class abstractionFactory
+{
+public:
+    virtual abstractionSport *getProduct() = 0;
+};
+
+class basketballFactory : public abstractionFactory
+{
+public:
+    basketballFactory()
     {
-    public:
-        basketballFactory()
-        {
-            printf("basketball factory\n");
-        }
+        printf("basketball factory\n");
+    }
 
-        abstractionSport *getProduct()
-        {
-            return new basketball();
-        }
-    };
-}
+    abstractionSport *getProduct()
+    {
+        return new basketball();
+    }
+};
+} // namespace factory_method
 
 namespace abstract_factory_mode
 {
-    /*abstractions*/
-    class abstractBall
+/*abstractions*/
+class abstractBall
+{
+public:
+    abstractBall(){};
+    virtual void print() = 0;
+};
+
+class abstractShirt
+{
+public:
+    abstractShirt(){};
+    virtual void print() = 0;
+};
+
+class abstractFactory
+{
+public:
+    abstractFactory(){};
+    virtual void           print()        = 0;
+    virtual abstractBall * ball_create()  = 0;
+    virtual abstractShirt *shirt_create() = 0;
+};
+
+/*children of balls*/
+class football : public abstractBall
+{
+public:
+    football()
     {
-    public:
-        abstractBall(){};
-        virtual void print() = 0;
-    };
-
-    class abstractShirt
+    }
+    void print()
     {
-    public:
-        abstractShirt(){};
-        virtual void print() = 0;
-    };
+        printf("This is football\n");
+    }
+};
 
-    class abstractFactory
+class baseball : public abstractBall
+{
+public:
+    baseball()
     {
-    public:
-        abstractFactory(){};
-        virtual void print() = 0;
-        virtual abstractBall *ball_create() = 0;
-        virtual abstractShirt *shirt_create() = 0;
-    };
+    }
 
-    /*children of balls*/
-    class football : public abstractBall
+    void print()
     {
-    public:
-        football()
-        {
-        }
-        void print()
-        {
-            printf("This is football\n");
-        }
-    };
+        printf("This is baseball\n");
+    }
+};
 
-    class baseball : public abstractBall
+/*children of shirts*/
+class football_shirt : public abstractShirt
+{
+public:
+    football_shirt()
     {
-    public:
-        baseball()
-        {
-        }
+    }
 
-        void print()
-        {
-            printf("This is baseball\n");
-        }
-    };
-
-    /*children of shirts*/
-    class football_shirt : public abstractShirt
+    void print()
     {
-    public:
-        football_shirt()
-        {
-        }
+        printf("This is football_shirt\n");
+    }
+};
 
-        void print()
-        {
-            printf("This is football_shirt\n");
-        }
-    };
-
-    /*children of factory*/
-    class football_factory : public abstractFactory
+/*children of factory*/
+class football_factory : public abstractFactory
+{
+public:
+    football_factory()
     {
-    public:
-        football_factory()
-        {
-            print();
-        }
+        print();
+    }
 
-        void print()
-        {
-            printf("This is football factory\n");
-        }
+    void print()
+    {
+        printf("This is football factory\n");
+    }
 
-        abstractBall *ball_create()
-        {
-            return new football();
-        }
+    abstractBall *ball_create()
+    {
+        return new football();
+    }
 
-        abstractShirt *shirt_create()
-        {
-            return new football_shirt();
-        }
-    };
-}
+    abstractShirt *shirt_create()
+    {
+        return new football_shirt();
+    }
+};
+} // namespace abstract_factory_mode
 
 namespace builderpattern
 {
-    /*abstractions*/
-    class House
+/*abstractions*/
+class House
+{
+public:
+    House()
     {
-    public:
-        House()
-        {
-        }
+    }
 
-        void setFloor(string iFloor)
-        {
-            this->floor = iFloor;
-        }
-
-        void setWall(string iWall)
-        {
-            this->wall = iWall;
-        }
-
-    private:
-        string floor;
-        string wall;
-    };
-
-    class AbstractBuilder : public House
+    void setFloor(string iFloor)
     {
-    public:
-        AbstractBuilder()
-        {
-            house = new House();
-        }
-		~AbstractBuilder()
-		{
-			//delete house; 
-			/* shouldn't delete here, because I have already deleted it in Director*/
-		}
+        this->floor = iFloor;
+    }
 
-        virtual void buildFloor() = 0;
-        virtual void buildWall() = 0;
-        virtual House *getHouse() = 0;
-
-        House *house;
-    };
-
-    /*concrete of builder*/
-    class ConcreteBuilderA : public AbstractBuilder
+    void setWall(string iWall)
     {
-    public:
-        ConcreteBuilderA()
-        {
-            printf("This is ConcreteBuilderA\n");
-        }
+        this->wall = iWall;
+    }
 
-        void buildFloor()
-        {
-            this->house->setFloor("FloorA");
-        }
+private:
+    string floor;
+    string wall;
+};
 
-        void buildWall()
-        {
-            this->house->setWall("WallA");
-        }
-
-        House *getHouse()
-        {
-            return this->house;
-        }
-    };
-
-     /*concrete of builder2*/
-    class ConcreteBuilderB : public AbstractBuilder
+class AbstractBuilder : public House
+{
+public:
+    AbstractBuilder()
     {
-    public:
-        ConcreteBuilderB()
-        {
-            printf("This is ConcreteBuilderB\n");
-        }
-
-        void buildFloor()
-        {
-            this->house->setFloor("FloorB");
-        }
-
-        void buildWall()
-        {
-            this->house->setWall("WallB");
-        }
-
-        House *getHouse()
-        {
-            return this->house;
-        }
-    };
-
-    /*Director*/
-    class Director
+        house = new House();
+    }
+    ~AbstractBuilder()
     {
-    public:
-        Director(AbstractBuilder *iBuilder)
-        {
-            this->builder = iBuilder;
-        }
-		~Director()
-		{
-			delete builder;
-		}
+        // delete house;
+        /* shouldn't delete here, because I have already deleted it in
+         * Director*/
+    }
 
-        House *construct()
-        {
-            builder->buildFloor();
-            builder->buildWall();
+    virtual void   buildFloor() = 0;
+    virtual void   buildWall()  = 0;
+    virtual House *getHouse()   = 0;
 
-            return builder->getHouse();
-        }
+    House *house;
+};
 
-    private:
-        AbstractBuilder *builder;
-    };
+/*concrete of builder*/
+class ConcreteBuilderA : public AbstractBuilder
+{
+public:
+    ConcreteBuilderA()
+    {
+        printf("This is ConcreteBuilderA\n");
+    }
 
-}
+    void buildFloor()
+    {
+        this->house->setFloor("FloorA");
+    }
 
+    void buildWall()
+    {
+        this->house->setWall("WallA");
+    }
 
+    House *getHouse()
+    {
+        return this->house;
+    }
+};
 
+/*concrete of builder2*/
+class ConcreteBuilderB : public AbstractBuilder
+{
+public:
+    ConcreteBuilderB()
+    {
+        printf("This is ConcreteBuilderB\n");
+    }
+
+    void buildFloor()
+    {
+        this->house->setFloor("FloorB");
+    }
+
+    void buildWall()
+    {
+        this->house->setWall("WallB");
+    }
+
+    House *getHouse()
+    {
+        return this->house;
+    }
+};
+
+/*Director*/
+class Director
+{
+public:
+    Director(AbstractBuilder *iBuilder)
+    {
+        this->builder = iBuilder;
+    }
+    ~Director()
+    {
+        delete builder;
+    }
+
+    House *construct()
+    {
+        builder->buildFloor();
+        builder->buildWall();
+
+        return builder->getHouse();
+    }
+
+private:
+    AbstractBuilder *builder;
+};
+
+} // namespace builderpattern
 
 #endif

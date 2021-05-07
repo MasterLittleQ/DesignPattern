@@ -7,58 +7,69 @@
 using namespace std;
 namespace cplus_bridge
 {
-	class Game
-	{
-	public:
-		Game() {}
-		virtual void play(void) = 0;
-	};
-
-    class GameA : public Game
+class Game
+{
+public:
+    Game()
     {
-    public:
-        GameA() {}
-		void play(void)
-        {
-            printf("playing Game A\n");
-        }
-    };
+    }
+    virtual void play(void) = 0;
+};
 
-    class GameB : public Game
+class GameA : public Game
+{
+public:
+    GameA()
     {
-    public:
-        GameB() {}
-        void play(void)
-        {
-            printf("playing Game B\n");
-        }
-    };
-
-    class phone
+    }
+    void play(void)
     {
-    public:
-        phone() {}
-        virtual void setupGame(Game *game) = 0;
+        printf("playing Game A\n");
+    }
+};
 
-    private:
-        Game *game;
-    };
-
-    class phoneA : public phone
+class GameB : public Game
+{
+public:
+    GameB()
     {
-    public:
-        phoneA() {}
-        void setupGame(Game *igame)
-        {
-            this->game = igame;
-        }
-        void print(void)
-        {
-            this->game->play();
-        }
-	private:
-		Game *game;
-    };
-}
+    }
+    void play(void)
+    {
+        printf("playing Game B\n");
+    }
+};
+
+class phone
+{
+public:
+    phone()
+    {
+    }
+    virtual void setupGame(Game *game) = 0;
+
+private:
+    Game *game;
+};
+
+class phoneA : public phone
+{
+public:
+    phoneA()
+    {
+    }
+    void setupGame(Game *igame)
+    {
+        this->game = igame;
+    }
+    void print(void)
+    {
+        this->game->play();
+    }
+
+private:
+    Game *game;
+};
+} // namespace cplus_bridge
 
 #endif

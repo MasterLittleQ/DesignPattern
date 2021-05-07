@@ -8,68 +8,78 @@ using namespace std;
 
 namespace space_decorate
 {
-    class component
+class component
+{
+public:
+    component()
     {
-    public:
-        component() {}
-        virtual void operation(void) = 0;
-    };
+    }
+    virtual void operation(void) = 0;
+};
 
-    class phone : public component
+class phone : public component
+{
+public:
+    phone()
     {
-    public:
-        phone() {}
+    }
 
-        void operation(void)
-        {
-            printf("This is phone\n");
-        }
-    };
-
-    class decorate : public component
+    void operation(void)
     {
-    public:
-        decorate() {}
-        decorate(component *c) : c_component(c) {}
+        printf("This is phone\n");
+    }
+};
 
-        void operation(void)
-        {
-            this->c_component->operation();
-        }
-
-        component *get_component(void)
-        {
-            return this->c_component;
-        }
-
-        void set_component(component *c)
-        {
-            this->c_component = c;
-        }
-
-    private:
-        component *c_component;
-    };
-
-    class decorator_shell : public decorate
+class decorate : public component
+{
+public:
+    decorate()
     {
-        decorator_shell(){}
-        decorator_shell(component *c)
-        {
-            this->set_component(c);
-        }
+    }
+    decorate(component *c) : c_component(c)
+    {
+    }
 
-        void operation(void)
-        {
-            this->operation();
-        }
+    void operation(void)
+    {
+        this->c_component->operation();
+    }
 
-        void new_behavior(void)
-        {
-            printf("This is new\n");
-        }
-    };
+    component *get_component(void)
+    {
+        return this->c_component;
+    }
 
-}
+    void set_component(component *c)
+    {
+        this->c_component = c;
+    }
+
+private:
+    component *c_component;
+};
+
+class decorator_shell : public decorate
+{
+    decorator_shell()
+    {
+    }
+    decorator_shell(component *c)
+    {
+        this->set_component(c);
+    }
+
+    void operation(void)
+    {
+        this->operation();
+    }
+
+    void new_behavior(void)
+    {
+        printf("This is new\n");
+    }
+};
+
+} // namespace space_decorate
 
 #endif

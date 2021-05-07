@@ -8,61 +8,61 @@ using namespace std;
 
 namespace space_facade
 {
-    class Memory
+class Memory
+{
+public:
+    Memory()
     {
-    public:
-        Memory()
-        {
-        }
-        void print(void)
-        {
-            printf("This is memory\n");
-        }
-
-    private:
-        int age;
-    };
-
-    class CPU
+    }
+    void print(void)
     {
-    public:
-        CPU()
-        {
-        }
-        void print(void)
-        {
-            printf("This is CPU\n");
-        }
+        printf("This is memory\n");
+    }
 
-    private:
-        int age;
-    };
+private:
+    int age;
+};
 
-    class Facade
+class CPU
+{
+public:
+    CPU()
     {
-    public:
-        Facade(Memory *iMemory, CPU *iCpu)
-        {
-            this->c_memory = iMemory;
-            this->c_cpu = iCpu;
-        }
-        ~Facade()
-        {
-            delete (c_memory);
-            delete (c_cpu);
-        }
+    }
+    void print(void)
+    {
+        printf("This is CPU\n");
+    }
 
-        void power_on(void)
-        {
-            this->c_cpu->print();
-            this->c_memory->print();
-        }
+private:
+    int age;
+};
 
-    private:
-        Memory *c_memory;
-        CPU *c_cpu;
-    };
+class Facade
+{
+public:
+    Facade(Memory *iMemory, CPU *iCpu)
+    {
+        this->c_memory = iMemory;
+        this->c_cpu    = iCpu;
+    }
+    ~Facade()
+    {
+        delete (c_memory);
+        delete (c_cpu);
+    }
 
-}
+    void power_on(void)
+    {
+        this->c_cpu->print();
+        this->c_memory->print();
+    }
+
+private:
+    Memory *c_memory;
+    CPU *   c_cpu;
+};
+
+} // namespace space_facade
 
 #endif

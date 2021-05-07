@@ -8,30 +8,29 @@ using namespace std;
 
 namespace singleton
 {
-    class Singleton
+class Singleton
+{
+public:
+    static Singleton *getInstance()
     {
-    public:
-        static Singleton *getInstance()
-        {
-            if (instance == NULL)
-            {
-                printf("get Singleton\n");
-                instance = new Singleton();
-            }
-            return instance;
+        if (instance == NULL) {
+            printf("get Singleton\n");
+            instance = new Singleton();
         }
+        return instance;
+    }
 
-    private:
-        Singleton()
-        {
-            printf("init Singleton\n");
-        }
+private:
+    Singleton()
+    {
+        printf("init Singleton\n");
+    }
 
-        static Singleton *instance;
-    };
+    static Singleton *instance;
+};
 
-    Singleton *Singleton::instance = NULL;
+Singleton *Singleton::instance = NULL;
 
-}
+} // namespace singleton
 
 #endif

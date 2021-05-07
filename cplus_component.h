@@ -7,74 +7,76 @@
 using namespace std;
 namespace space_component
 {
-    class component
+class component
+{
+public:
+    component()
     {
-    public:
-        component(){}
-        component(string iName)
-        {
-            this->name = iName;
-        }
-        virtual void print(void) = 0;
-
-    private:
-        string name;
-    };
-
-    class office : public component
+    }
+    component(string iName)
     {
-    public:
-        office(string iName)
-        {
-            this->name = iName;
-        }
-        void print(void)
-        {
-            "This is office\n";
-        }
+        this->name = iName;
+    }
+    virtual void print(void) = 0;
 
-    private:
-        string name;
-    };
+private:
+    string name;
+};
 
-    class hall : public component
+class office : public component
+{
+public:
+    office(string iName)
     {
-    public:
-        hall(string iName)
-        {
-            this->name = iName;
-        }
-
-        void print(void)
-        {
-            "This is hall\n";
-        }
-
-    private:
-        string name;
-    };
-
-    class SubComopnet : public component
+        this->name = iName;
+    }
+    void print(void)
     {
-    public:
-        SubComopnet(string iName)
-        {
-            this->name = iName;
-        }
+        "This is office\n";
+    }
 
-        void add(component* c)
-        {
-            componentVector.push_back(c);
-        }
+private:
+    string name;
+};
 
-        void print(void)
-        {
-            "This is SubComponent\n";
-        }
+class hall : public component
+{
+public:
+    hall(string iName)
+    {
+        this->name = iName;
+    }
 
-    private:
-        string name;
-        vector<component*>componentVector;
-    };
-}
+    void print(void)
+    {
+        "This is hall\n";
+    }
+
+private:
+    string name;
+};
+
+class SubComopnet : public component
+{
+public:
+    SubComopnet(string iName)
+    {
+        this->name = iName;
+    }
+
+    void add(component *c)
+    {
+        componentVector.push_back(c);
+    }
+
+    void print(void)
+    {
+        "This is SubComponent\n";
+    }
+
+private:
+    string              name;
+    vector<component *> componentVector;
+};
+} // namespace space_component
 #endif
